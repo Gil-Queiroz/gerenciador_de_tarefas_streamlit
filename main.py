@@ -3,7 +3,7 @@ import pandas as pd
 import sqlite3
 import plotly.express as px
 
-# conexão com banco de dados
+
 def conectar_bd():
     conn = sqlite3.connect("tarefas.db")
     cursor = conn.cursor()
@@ -16,14 +16,14 @@ def conectar_bd():
     """)
     conn.commit()
     return conn
-#Carregar as tarefas do banco de dados
+
 def carregar_tarefas():
     conn = conectar_bd()
     df = pd.read_sql("SELECT * FROM tarefas", conn)
     conn.close()
     return df 
 
-# adicionar nova tarefa
+
 def adicionar_tarefa():
     tarefa = st.session_state.get("entrada_tarefa", "").strip()
     if not tarefa:
@@ -38,7 +38,7 @@ def adicionar_tarefa():
 
     st.session_state["entrada_tarefa"] = ""
 
-# atualizar status das tarefas
+
 def atualizar_status(tarefa_id, status):
     conn = conectar_bd()
     cursor = conn.cursor()
@@ -47,7 +47,6 @@ def atualizar_status(tarefa_id, status):
     conn.close()
     st.rerun()
 
-# deletar tarefa
 def deletar_tarefa(tarefa_id):
     conn = conectar_bd()
     cursor = conn.cursor()
@@ -57,8 +56,6 @@ def deletar_tarefa(tarefa_id):
     st.rerun()
 
 
-
-# configuração da página 
 st.set_page_config(
     page_title ="Gerenciador de tarefas",
     layout ="wide"
@@ -69,10 +66,10 @@ st.title(" 📋 Gerenciador de tarefas")
 st.text_input("Adicione uma nova tarefa: ",key = "entrada_tarefa")
 st.button("Adicionar", on_click = adicionar_tarefa)
 
-# carregar tarefas
+
 lista_tarefas = carregar_tarefas()
 
-# container principal
+
 with st.container():
     col_esq, col_dir = st.columns(2)
 
